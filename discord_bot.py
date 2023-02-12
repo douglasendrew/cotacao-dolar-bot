@@ -25,55 +25,49 @@ class Client(commands.Bot):
 
     async def on_ready(self):
         channel = self.get_channel(1074194502778110027)
-        await channel.send('Onlineeee!')
+        await channel.send('Acompanhamento do dólar iniciado')
         await self.refresh_dolar()
-
-    num = ''
-
-    def last_value(self, value):
-        global num
-        num = value
 
     # Faz o refresh no valor do dolar
     async def refresh_dolar(self):
-
         requisicao = requests.get('https://economia.awesomeapi.com.br/all/USD-BRL')
         cotacao = requisicao.json()
-        val = str(round(float(cotacao['USD']['bid']), 2))
+        channel = self.get_channel(1074194502778110027)
+        value_l = ''
 
-        if val != self.last_value:
+        while not self.is_closed():
+            val = str(round(float(cotacao['USD']['bid']), 2))
+            if val != value_l:
+                print(f'Valor Agora: {value_l}')
+                value_l = str(val)
+                embed = discord.Embed(
+                    title='Dólar',
+                    description='Dolar teve uma alteraçao, agora está em: R$ ' + val,
+                    colour=discord.Colour.green()
+                )
 
-            self.last_value(val)
+                max = cotacao['USD']['high']
+                min = cotacao['USD']['low']
 
-            embed = discord.Embed(
-                title='Dolar Agora',
-                description='Dolar está em: R$ ' + val,
-                colour=discord.Colour.blue()
-            )
+                embed.set_footer(text=f'Máximo: R$ {max} | Mínimo: R$ {min}')
 
-            max = cotacao['USD']['high']
-            min = cotacao['USD']['low']
-
-            embed.set_footer(text=f'Máximo: R$ {max} | Mínimo: R$ {min}')
-
-            channel = self.get_channel(1074194502778110027)
-            while not self.is_closed():
+                channel = self.get_channel(1074194502778110027)
                 await channel.send(embed=embed)
-                await asyncio.sleep(10)
+                await asyncio.sleep(600)
 
-        else:
-            embed = discord.Embed(
-                title='Dolar Agora',
-                description='Nao teve alteraçao',
-                colour=discord.Colour.blue()
-            )
+            else:
+                print(f'Valor Agora: {value_l}')
+                embed = discord.Embed(
+                    title='Dólar',
+                    description='Nao teve alteraçao',
+                    colour=discord.Colour.red()
+                )
 
-            channel = self.get_channel(1074194502778110027)
-            while not self.is_closed():
+                embed.set_footer(text=f'Valor Atual: R$ {value_l}')
                 await channel.send(embed=embed)
-                await asyncio.sleep(10)
+                await asyncio.sleep(600)
 
 
 # Client RUN
 client = Client(command_prefix="!")
-client.run('MTA3NDE5NDAyOTM0MTgzOTQ2MQ.GWdMY0.zzmWczj9HoZH0p4dP0jASlencQq0L80zdtSF-s')
+client.run('TOKEN')
