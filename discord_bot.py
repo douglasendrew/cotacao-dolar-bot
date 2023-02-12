@@ -7,18 +7,17 @@ import asyncio
 
 class Client(commands.Bot):
     def __init__(self, command_prefix):
-        intents = discord.Intents.default()
+        intents = discord.Intents.all()
         super(commands.Bot, self).__init__(command_prefix, intents=intents)
         self.add_commands()
 
     # Outros comandos do Bot
     def add_commands(self):
-        print('Funcionando')
+        print('Carregando comandos!')
 
-        @self.command(name="status", pass_context=True)
-        async def status(ctx):
-            print(ctx)
-            await ctx.send('Legal')
+        @self.command(name="v", pass_context=True)
+        async def v(ctx):
+            await ctx.send(f'{ctx.author.mention}, este bot está na versao 1.0!')
 
     async def setup_hook(self) -> None:
         self.bg_task = self.loop.create_task(self.refresh_dolar())
@@ -53,7 +52,7 @@ class Client(commands.Bot):
 
                 channel = self.get_channel(1074194502778110027)
                 await channel.send(embed=embed)
-                await asyncio.sleep(3600)
+                await asyncio.sleep(600)
 
             else:
                 print(f'Valor Agora: {value_l}')
@@ -65,7 +64,7 @@ class Client(commands.Bot):
 
                 embed.set_footer(text=f'Valor Atual: R$ {value_l}')
                 await channel.send(embed=embed)
-                await asyncio.sleep(3600)
+                await asyncio.sleep(600)
 
 
 # Client RUN
