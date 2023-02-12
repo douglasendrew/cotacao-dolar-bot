@@ -53,7 +53,7 @@ class Client(commands.Bot):
 
                 channel = self.get_channel(1074194502778110027)
                 await channel.send(embed=embed)
-                await asyncio.sleep(600)
+                await asyncio.sleep(3600)
 
             else:
                 print(f'Valor Agora: {value_l}')
@@ -65,7 +65,7 @@ class Client(commands.Bot):
 
                 embed.set_footer(text=f'Valor Atual: R$ {value_l}')
                 await channel.send(embed=embed)
-                await asyncio.sleep(600)
+                await asyncio.sleep(3600)
 
 
 # Client RUN
