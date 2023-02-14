@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import requests
-# Funçao onde pega o token
+# Funçao onde pega o token do Discord
 import token_1
 # import json
 import asyncio
@@ -64,4 +64,4 @@ class Client(commands.Bot):
 
 # Client RUN
 client = Client(command_prefix="!")
-client.run(token_1.Token().get_token)
+client.run(token_1.Token.get_token())
